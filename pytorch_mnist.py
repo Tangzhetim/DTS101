@@ -21,7 +21,7 @@ def get_n_params(model):
         np += p.nelement()
     return np
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+#load the data
 input_size = 28 * 28
 output_size = 10
 
@@ -40,6 +40,7 @@ test_loader = torch.utils.data.DataLoader(
 '''
 class FC2Layer(nn.Module):
     def __init__(self,input_size,n_hidden,output_size):
+        #or nn.Module.__init__(self)
         super(FC2Layer, self).__init__()
         self.input_size = input_size
         self.network = nn.Sequential(
@@ -54,15 +55,17 @@ class FC2Layer(nn.Module):
         x = x.view(-1,self.input_size)
         return self.network
 '''
+#define the CNN
 class CNN(nn.Module):
     def __init__(self,input_size,n_feature,output_size):
         super(CNN, self).__init__()
+        #structure of the CNN
         self.n_feature = n_feature
         self.conv1 = nn.Conv2d(in_channels=1,out_channels=n_feature,kernel_size=5)
         self.conv2 = nn.Conv2d(n_feature,n_feature,kernel_size=5)
         self.fc1 = nn.Linear(n_feature*4*4,50)
         self.fc2 = nn.Linear(50,10)
-
+    # You can repeate the following structure
     def forward(self,x,verbose=False):
         x=self.conv1(x)
         x=F.relu(x)
